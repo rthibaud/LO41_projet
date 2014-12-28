@@ -1,42 +1,77 @@
 #include "chaineDeProduction.h"
 
-
-int	P (int SemId, int Nsem) {		/*   P(s)      */
-	struct sembuf SemBuf = {0,-1,0} ;
-	SemBuf.sem_num = Nsem ;
-	return semop(SemId, &SemBuf,1) ;
-}
-
-int	V (int SemId, int Nsem) {		/*   V(s)      */
-	struct sembuf SemBuf = {0,1,0} ;
-	SemBuf.sem_num = Nsem ;
-	return semop(SemId, &SemBuf, 1) ;
-}
-
-int initsem(key_t semkey) 
-{
-    
-	int status = 0;		
-	int semid_init;
-   	union semun {
-		int val;
-		struct semid_ds *stat;
-		ushort * array;
-	} ctl_arg;
-    if ((semid_init = semget(semkey, 2, IFLAGS)) > 0) {
-		
-	    	ushort array[nbPoste+1] = {0, 0};
-	    	ctl_arg.array = array;
-	    	status = semctl(semid_init, 0, SETALL, ctl_arg);
-    }
-   if (semid_init == -1 || status == -1) { 
-	perror("Erreur initsem");
-	return (-1);
-    } else return (semid_init);
-}
-
 void* creationThread(void* ID)
 {
 	printf("je suis dans le thread %d \n ",(int)ID);
 	exit(0);
 }
+
+void posteDeTravail(int ID)
+{
+	printf("Le poste %d rentre en action. \n",ID);
+	sem_wait(&panneauTicket[ID]);
+
+	printf("Le poste %d prend une caisse pleine et une vide \n",ID);
+	sem_wait(&zoneCaissePleine[ID]);
+	sem_wait(&zoneCaisseVide[ID]);
+
+	if (ID<nbPostes-1)
+	{
+		sem_post(&panneauTicket[ID+1]);
+	}
+
+	/*travail(ID);*/
+	printf("Le poste %d a termine, il fournit le poste suivant. \n",ID);
+
+	if (ID>0)
+	{
+		sem_post(&zoneCaissePleine[ID-1]);
+	}
+
+	if (ID<nbPostes-1)
+	{
+		sem_post(&zoneCaisseVide[ID-1]);
+	}
+
+	pthread_mutex_lock(&mutex);
+	if (sem_getvalue(&zoneCaissePleine[ID-1])<2 )  
+	{
+		pthread_mutex_unlock(&mutex);
+		posteDeTravail(ID);
+	}
+}
+
+/*void premierPoste(int ID)
+{
+	printf("Le poste %d rentre en action. \n",ID);
+	
+
+	printf("Le poste %d prend une caisse pleine et une vide \n",ID);
+	sem_wait(&zoneCaissePleine[ID]);
+	sem_wait(&zoneCaisseVide[ID]);
+
+	if (ID<nbPostes-1)
+	{
+		sem_post(&panneauTicket[ID+1]);
+	}
+
+	/*travail(ID);
+	printf("Le poste %d a termine, il fournit le poste suivant. \n",ID);
+
+	if (ID>0)
+	{
+		sem_post(&zoneCaissePleine[ID-1]);
+	}
+
+	if (ID<nbPostes-1)
+	{
+		sem_post(&zoneCaisseVide[ID-1]);
+	}
+
+	pthread_mutex_lock(&mutex);
+	if (sem_getvalue(&zoneCaissePleine[ID-1])<2 ) 
+	{
+		pthread_mutex_unlock(&mutex);
+		posteDeTravail(ID);
+	}
+}*/

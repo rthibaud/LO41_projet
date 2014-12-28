@@ -6,23 +6,24 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <pthread.h>
+#include <semaphore.h>
 
-#define IFLAGS (SEMPERM | IPC_CREAT)
-#define SKEY   (key_t) IPC_PRIVATE	
-#define SEMPERM 0600				  /* Permission */
 
+
+sem_t panneauTicket[];
+sem_t zoneCaissePleine[];
+sem_t zoneCaisseVide[];
 pthread_t tid[];
-pthread_mutex_t mutex[];
+pthread_mutex_t mutex;
 int nbPostes;
+int nbPieces;
 
 
-/*pour les sémaphores initialisation, libération, protection*/
-int initsem(key_t semkey);
-int	V (int SemId, int Nsem);
-int	P (int SemId, int Nsem);
+
 
 
 void* creationThread(void* ID);
+void posteDeTravail(int ID);
 
 
 
