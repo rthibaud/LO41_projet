@@ -11,18 +11,17 @@ void* creationThread(void* ID)
 	int a= (int)ID;
 	switch (a)
 	{
-		case 0:
-			printf("demande voiture reçue, demande des materiaux\n");
-
-			break;
 		case 1:
-			printf("poste 1 reveillé. Demande pieces au poste 2\n");
+			printf("demande voiture reçue, demande des materiaux\n");
 			break;
 		case 2:
-			printf("poste 2 reveillé. Demande pieces au poste 3\n");
-			break;		
+			printf("poste 2 reveillé. Demande pieces au poste 1\n");
+			break;
 		case 3:
-			printf("poste 3 reveillé. Demande pieces au poste 4\n");
+			printf("poste 3 reveillé. Demande pieces au poste 2\n");
+			break;		
+		case 4:
+			printf("poste 4 reveillé. Demande pieces au poste 3\n");
 			break;	
 	}
 }
@@ -30,6 +29,12 @@ void* creationThread(void* ID)
 void* posteDeTravail(void* ID)
 {
 	
+}
+
+void travail()
+{
+	sleep(4);
+	printf("piece construite\n");
 }
 
 

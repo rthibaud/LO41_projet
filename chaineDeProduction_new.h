@@ -25,6 +25,7 @@ pthread_mutex_t mutex;
 void fluxInfo(int ID);
 void* creationThread(void* ID);
 void* posteDeTravail(void* ID);
+void travail();
 
 
 
