@@ -31,9 +31,14 @@ int main (int argc, char* argv[])
 		}	
 	}
 
-	for(num=0;num<=nbPostes;num++)
+	for(num=0;num<nbPostes;num++)
 	{
 		pthread_create(tid+num,0,creationThread,(void *)num);
+	}
+
+	for(num=0;num<nbPostes;num++)
+	{
+		pthread_join(&tid[num],NULL);
 	}
 
 	/*liberation des ressources*/
