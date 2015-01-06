@@ -2,7 +2,7 @@
 
 int main (int argc, char* argv[])
 {
-	int num;
+	int num,k;
 	pthread_mutex_init(&mutex,NULL);
 
 	struct sigaction action;
@@ -17,33 +17,37 @@ int main (int argc, char* argv[])
 	zoneCaissePleine=(sem_t*)malloc((nbPostes+1)*sizeof(sem_t));
 	zoneCaisseVide=(sem_t*)malloc((nbPostes+1)*sizeof(sem_t));
 
+		sem_init(&fin,0,0);
+
 	for(num=0;num<nbPostes;num ++)
 	{			
 		sem_init(&zoneCaissePleine[num],0,2);
 		sem_init(&zoneCaisseVide[num],0,2);
 		if (num<nbPostes-1)
 		{
-			sem_init(&panneauTicket[num],0,0); 
+			sem_init(&panneauTicket[num],0,1); 
 		}
 		else
 		{
 			sem_init(&panneauTicket[num],0,nbPieces);
-		}	
+		}
 	}
+
 
 	for(num=0;num<nbPostes;num++)
 	{
 		pthread_attr_init (tid_attr+num);
  		pthread_attr_setdetachstate(tid_attr+num, PTHREAD_CREATE_DETACHED) ;
-		//pthread_create(tid+num,0,creationThread,(void *)num);
-		//pthread_join((tid+num-1),NULL);
   		pthread_create (tid+num, tid_attr+num,creationThread,(void*)num);
 	}
 
-	for(num=0;num<nbPostes;num++)
+	/*for(num=0;num<nbPostes;num++)
 	{
-		//pthread_join((tid+num),NULL);
-	}
+		pthread_join((tid+num),NULL);
+	}*/
+
+
+	sem_wait(&fin);
 
 	/*liberation des ressources*/
 	for(num=0;num<nbPostes+1;num++)
@@ -52,12 +56,11 @@ int main (int argc, char* argv[])
 		sem_destroy(&zoneCaissePleine[num]);
 		sem_destroy(&zoneCaisseVide[num]);
 	}
-	
-	
 	free(tid);
+	free(tid_attr);
 	free(panneauTicket);
 	free(zoneCaissePleine);
 	free(zoneCaisseVide);
-
-	return 0;
+	
+	//return 0;
 }

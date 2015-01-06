@@ -12,6 +12,7 @@
 sem_t *panneauTicket;
 sem_t *zoneCaissePleine;
 sem_t *zoneCaisseVide;
+sem_t fin;
 pthread_t *tid;
 pthread_attr_t *tid_attr;
 pthread_mutex_t mutex;
