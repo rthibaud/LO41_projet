@@ -69,9 +69,20 @@ void posteDeTravail(int ID)
 	printf("Le poste %d a termine, il fournit le poste suivant. \n",ID);
 
 	if (ID>0)
+
+void traitant(int num)
+ {
+	printf("\nLiberation des ressources..\n");
+	for(num=0;num<nbPostes+1;num++)
 	{
-		sem_post(&zoneCaissePleine[ID-1]);
+		sem_destroy(&panneauTicket[num]);
+		sem_destroy(&zoneCaissePleine[num]);
+		sem_destroy(&zoneCaisseVide[num]);
 	}
+	free(tid);
+	free(panneauTicket);
+	free(zoneCaissePleine);
+	free(zoneCaisseVide);
 
 	if (ID<nbPostes-1)
 	{
@@ -113,4 +124,14 @@ void premierPoste(int ID)
 		pthread_mutex_unlock(&mutex);
 		premierPoste(ID);
 	}
+	raise(SIGSTOP);
+  }
+
+void travail(int ID)
+{
+	sem_wait(&zoneCaisseVide[ID]); 
+	printf("Le poste %d prepare une piece \n", ID);
+	sleep(1); //BOUCLE
+	printf("piece construite par le poste %d\n", ID);
+	sem_post(&zoneCaissePleine[ID]);
 }
