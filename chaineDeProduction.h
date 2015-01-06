@@ -32,6 +32,7 @@ void accueil();
 void* creationThread(void* ID);
 void posteDeTravail(int ID);
 void premierPoste(int ID);
+void dernierPoste(int ID);
 
 
 
