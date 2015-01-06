@@ -53,7 +53,7 @@ void accueil()
 	}
 
 	printf("Combien voulez-vous de pièces ? \n");
-	scanf("%d",nbPieces);
+	scanf("%d",&nbPieces);
 }
 
 void* creationThread(void* ID)
@@ -96,6 +96,7 @@ void traitant(int num)
 	free(zoneCaissePleine);
 	free(zoneCaisseVide);
 
+	ID=num;
 	if (ID<nbPostes-1)
 	{
 		sem_post(&zoneCaisseVide[ID-1]);

@@ -15,7 +15,7 @@
 sem_t *panneauTicket;
 sem_t *zoneCaissePleine;
 sem_t *zoneCaisseVide;
-pthread_t tid[];
+pthread_t *tid;
 pthread_mutex_t mutex;
 int nbPostes;
 int nbPieces;
