@@ -1,25 +1,8 @@
 #include "chaineDeProduction.h"
 
-void traitant(int num)
- {
-	printf("\nLiberation des ressources..\n");
-	for(num=0;num<nbPostes+1;num++)
-	{
-		sem_destroy(&panneauTicket[num]);
-		sem_destroy(&zoneCaissePleine[num]);
-		sem_destroy(&zoneCaisseVide[num]);
-	}
-	free(tid);
-	free(panneauTicket);
-	free(zoneCaissePleine);
-	free(zoneCaisseVide);
-
-	raise(SIGSTOP);
-  }
-
 int main (int argc, char* argv[])
 {
-	int num, i;
+	int num, i, h;
 	pthread_mutex_init(&mutex,NULL);
 
 	struct sigaction action;
@@ -32,27 +15,12 @@ int main (int argc, char* argv[])
 	zoneCaissePleine=(sem_t*)malloc((nbPostes+1)*sizeof(sem_t));
 	zoneCaisseVide=(sem_t*)malloc((nbPostes+1)*sizeof(sem_t));
 
-
-	for(num=0;num<nbPostes;num ++)
+	for(num=0;num<=nbPostes;num ++)
 	{	
 		sem_init(&panneauTicket[num],0,2); 
-		//sem_init(&zoneCaissePleine[num],0,0);
-		//sem_init(&zoneCaisseVide[num],0,1);	
+		sem_init(&zoneCaissePleine[num],0,0);
+		sem_init(&zoneCaisseVide[num],0,2);	
 	}
-
-
-	sem_init(&zoneCaissePleine[4],0,0);
-	sem_init(&zoneCaisseVide[4],0,2);	
-
- 	sem_init(&zoneCaissePleine[3],0,0);
-	sem_init(&zoneCaisseVide[3],0,2);	
-
-	sem_init(&zoneCaissePleine[2],0,0);
-	sem_init(&zoneCaisseVide[2],0,2);	
-	
-	sem_init(&zoneCaissePleine[1],0,0);
-	sem_init(&zoneCaisseVide[1],0,2);	
-
 
 	//flux de demande
 	sem_post(&zoneCaissePleine[0]); //le premier poste a toujours des materiaux disponibles
@@ -69,28 +37,18 @@ int main (int argc, char* argv[])
 			sem_post(&zoneCaisseVide[num-1]);
 			switch (num)
 			{
-				case 4:
+				case nbPostes:
 				{
 					printf("voiture prete\n");
 					num=0;
 					break;
 				}
-				case 3:
+				default:
 				{
-					num=5;
+					num=num+2;
 					break;
 				}
-				case 2:
-				{
-					num=4;
-					break;
-				}
-				case 1:
-				{
-					num=3;
-					break;
-				}
-		}
+			}
 		}
 		else
 		{	

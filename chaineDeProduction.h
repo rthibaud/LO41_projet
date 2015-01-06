@@ -11,9 +11,8 @@
 
 #define nbPostes 4
 
-//int nbPostes;
 int nbPieces;
-int val;
+int val, num;
 
 sem_t *panneauTicket;
 sem_t *zoneCaissePleine;
@@ -21,9 +20,7 @@ sem_t *zoneCaisseVide;
 pthread_t *tid;
 pthread_mutex_t mutex;
 
-void fluxInfo(int ID);
-void* creationThread(void* ID);
-void* posteDeTravail(void* ID);
+void traitant(int num);
 void travail(int ID);
 
 #endif
