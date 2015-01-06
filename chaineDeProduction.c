@@ -58,8 +58,21 @@ void accueil()
 
 void* creationThread(void* ID)
 {
-	printf("je suis dans le thread %d \n ",(int)ID);
-	exit(0);
+	int i;
+	i=(int)ID;
+
+	if (i==0)
+	{
+		premierPoste(i);
+	}
+	elif (i==nbPostes-1)
+	{
+		dernierPoste(i);
+	}
+	else
+	{
+		posteDeTravail(i);
+	}
 }
 
 void posteDeTravail(int ID)
