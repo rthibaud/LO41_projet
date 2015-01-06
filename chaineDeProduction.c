@@ -38,7 +38,7 @@ void accueil()
 		scanf("%d",&choix);
 	}
 
-	/*switch(choix)
+	switch(choix)
 	{
 		case(1):nbPostes=2;break;
 		case(2):nbPostes=8;break;
@@ -50,54 +50,12 @@ void accueil()
 		case(8):printf("Combien de postes nécessite votre produit ? \n");
 				scanf("%d",&nbPostes);break;
 		case(0):printf("ben aurevoir alors \n");exit(0);break;
-	}*/
+	}
 
 	printf("Combien voulez-vous de pièces ? \n");
 	scanf("%d",&nbPieces);
-}
 
-void* creationThread(void* ID)
-{
-	int i;
-	i=(int)ID;
-
-	if (i==0)
-	{
-		premierPoste(i);
-	}
-	else if (i==nbPostes-1)
-	{
-		dernierPoste(i);
-	}
-	else
-	{
-		posteDeTravail(i);
-	}
-}
-
-void posteDeTravail(int ID)
-{
-	/*int nbCaisse;*/
-	printf("Le poste %d rentre en action. \n",ID);
-	sem_wait(&panneauTicket[ID]);
-
-	printf("Le poste %d prend une caisse pleine et une vide \n",ID);
-	sem_wait(&zoneCaissePleine[ID+1]);
-	sem_wait(&zoneCaisseVide[ID]);
-
-	/*travail(ID);*/
-	sleep(3);
-	printf("Le poste %d a termine, il fournit le poste suivant. \n",ID);
-	sem_post(&zoneCaissePleine[ID]);
-
-	/*pthread_mutex_lock(&mutex);
-	sem_getvalue(&zoneCaissePleine[ID+1],&nbCaisse);
-	if (nbCaisse<2 ) 
-	{
-		pthread_mutex_unlock(&mutex);
-		posteDeTravail(ID);
-	}*/
-
+	nbPiecesProduites=0;
 }
 
 void traitant(int num)
@@ -117,21 +75,85 @@ void traitant(int num)
 	raise(SIGSTOP);
 }
 
+void* creationThread(void* ID)
+{
+	int i,val;
+	i=(int)ID;
+
+	if (i==0)
+	{
+		pthread_mutex_lock(&mutex);
+		sem_getvalue(&zoneCaissePleine[i+1],&val);
+		while((nbPiecesProduites<nbPieces) || (val<2))
+		{
+			pthread_mutex_unlock(&mutex);
+			premierPoste(i);
+			sem_getvalue(&zoneCaissePleine[i+1],&val);
+		}
+	}
+	else if (i==nbPostes-1)
+	{
+		sem_getvalue(&panneauTicket[i],&val);
+		while(val>0)
+		{
+			dernierPoste(i);
+			sem_getvalue(&panneauTicket[i],&val);
+		}
+	}
+	else
+	{
+		pthread_mutex_lock(&mutex);
+		sem_getvalue(&zoneCaissePleine[i+1],&val);
+		while((nbPiecesProduites<nbPieces) || (val<2))
+		{
+			pthread_mutex_unlock(&mutex);
+			posteDeTravail(i);
+			sem_getvalue(&zoneCaissePleine[i+1],&val);
+		}
+	}
+}
+
+void posteDeTravail(int ID)
+{
+	/*int nbCaisse;*/
+	
+	sem_wait(&panneauTicket[ID]);
+	printf("Le poste %d rentre en action. \n",ID);
+
+	printf("Le poste %d prend une caisse pleine et une vide \n",ID);
+	sem_wait(&zoneCaissePleine[ID-1]);
+	sem_wait(&zoneCaisseVide[ID]);
+
+	sem_post(&panneauTicket[ID-1]);
+
+	/*travail(ID);*/
+	sleep(3);
+	printf("Le poste %d a termine, il fournit le poste suivant. \n",ID);
+	sem_post(&zoneCaissePleine[ID]);
+	sem_post(&zoneCaisseVide[ID-1]);
+
+	/*pthread_mutex_lock(&mutex);
+	sem_getvalue(&zoneCaissePleine[ID+1],&nbCaisse);
+	if (nbCaisse<2 ) 
+	{
+		pthread_mutex_unlock(&mutex);
+		posteDeTravail(ID);
+	}*/
+
+}
+
 void premierPoste(int ID)
 {
 	printf("Le poste %d rentre en action. \n",ID);
-	printf("Le poste %d prend une caisse pleine \n",ID);
+	sem_wait(&panneauTicket[ID]);
 
-	/* travail(ID);*/
+	printf("Le poste %d prend une caisse pleine et une vide \n",ID);
+	sem_wait(&zoneCaisseVide[ID]);
+
+	/*travail(ID);*/
 	sleep(3);
 	printf("Le poste %d a termine, il fournit le poste suivant. \n",ID);
-
-	/* pthread_mutex_lock(&mutex);
-	if (nbPiecesProduites<nbPieces) 
-	{
-		pthread_mutex_unlock(&mutex);
-		premierPoste(ID);
-	}*/
+	sem_post(&zoneCaissePleine[ID]);
   }
 
 void dernierPoste(int ID)
@@ -140,20 +162,14 @@ void dernierPoste(int ID)
 	sem_wait(&panneauTicket[ID]);
 
 	printf("Le poste %d prend une caisse pleine et une vide \n",ID);
-	sem_wait(&zoneCaissePleine[ID+1]);
+	sem_wait(&zoneCaissePleine[ID-1]);
 
 	/*travail(ID);*/
 	sleep(3);
 	printf("Le poste %d a termine, le produit est fini. \n",ID);
-	sem_post(&zoneCaissePleine[ID]);
+	pthread_mutex_lock(&mutex);
+	nbPiecesProduites++;
+	pthread_mutex_unlock(&mutex);
+	sem_post(&zoneCaisseVide[ID-1]);
   }
 
-
-void travail(int ID)
-{
-	sem_wait(&zoneCaisseVide[ID]); 
-	printf("Le poste %d prepare une piece \n", ID);
-	sleep(1); 
-	printf("piece construite par le poste %d\n", ID);
-	sem_post(&zoneCaissePleine[ID]);
-}
