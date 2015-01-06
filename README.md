@@ -34,5 +34,13 @@ pour chaque poste
 Chiara :)
 
 7/01/14
-Il y a un sleep(10) dans chaineDeProduction.c, si tu enleve le // tu peux voire qu'il affiche 
-meme pas  "Le poste 0  rentre en action"
+
+-j'ai fait les threads en modalité detached et ca marche bien (a ce qu il parait)! après je crois 
+il y avait un soucis avec l initialisation du semaphores des ticket, j'ai changé et ça marche 
+un peu mieux....au moins pas d erreur de segmentation!
+j'ai ajouté un semaphore qui dit quand le produit est fini, comme ça il a quelque chose à 
+attendre avant de sortir du programme, mais il y a encore quelque probleme parce que 
+il fait pas bien ce qu il doit faire! essaie à le lancer et regarde ce qu il fait
+
+bonne nuit! 
+chiara

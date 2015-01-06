@@ -68,6 +68,7 @@ void traitant(int num)
 		sem_destroy(&zoneCaisseVide[num]);
 	}
 	free(tid);
+	free(tid_attr);
 	free(panneauTicket);
 	free(zoneCaissePleine);
 	free(zoneCaisseVide);
@@ -80,12 +81,13 @@ void* creationThread(void* ID)
 
 	if (i==0)
 	{
-		pthread_mutex_lock(&mutex);
+		//pthread_mutex_lock(&mutex);
 		sem_getvalue(&zoneCaissePleine[i+1],&val);
 		while((nbPiecesProduites<nbPieces) || (val<2))
 		{
 			pthread_mutex_unlock(&mutex);
 			premierPoste(i);
+			printf("je suis encore dans le traitant...\n");
 			sem_getvalue(&zoneCaissePleine[i+1],&val);
 		}
 	}
@@ -125,7 +127,6 @@ void posteDeTravail(int ID)
 	printf("caisse prise\n");
 	sem_post(&panneauTicket[ID-1]);
 
-	/*travail(ID);*/
 	sleep(3);
 	printf("Le poste %d a termine, il fournit le poste suivant. \n",ID);
 	sem_post(&zoneCaissePleine[ID]);
@@ -171,5 +172,6 @@ void dernierPoste(int ID)
 	nbPiecesProduites++;
 	pthread_mutex_unlock(&mutex);
 	sem_post(&zoneCaisseVide[ID-1]);
+	sem_post(&fin);
   }
 
