@@ -23,8 +23,6 @@ int nbPiecesProduites;
 int nbCaisse;
 int val, num;
 
-
-
 void traitant(int num);
 void travail(int ID);
 
@@ -33,10 +31,6 @@ void* creationThread(void* ID);
 void posteDeTravail(int ID);
 void premierPoste(int ID);
 void dernierPoste(int ID);
-
-
-
-
 
 #endif
 

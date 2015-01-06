@@ -26,13 +26,10 @@ int main (int argc, char* argv[])
 
 	for(num=0;num<=nbPostes;num++)
 	{
-		pthread_create(&tid[num],0,creationThread,(void *)num);
+		pthread_create(tid+num,0,creationThread,(void *)num);
 	}
 
-	/*flux de demande*/
-	sem_post(&zoneCaissePleine[0]); /*le premier poste a toujours des materiaux disponibles*/
 
-/*
 	for(num=nbPostes;num>0; num --)
 	{	
 		printf("poste %d reveillé \n", num);

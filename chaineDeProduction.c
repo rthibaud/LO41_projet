@@ -120,15 +120,13 @@ void traitant(int num)
 void premierPoste(int ID)
 {
 	printf("Le poste %d rentre en action. \n",ID);
-	
-
 	printf("Le poste %d prend une caisse pleine \n",ID);
 
-	/*travail(ID);*/
+	/* travail(ID);*/
 	sleep(3);
 	printf("Le poste %d a termine, il fournit le poste suivant. \n",ID);
 
-	*/pthread_mutex_lock(&mutex);
+	/* pthread_mutex_lock(&mutex);
 	if (nbPiecesProduites<nbPieces) 
 	{
 		pthread_mutex_unlock(&mutex);
