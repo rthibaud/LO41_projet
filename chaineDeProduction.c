@@ -65,7 +65,7 @@ void* creationThread(void* ID)
 	{
 		premierPoste(i);
 	}
-	elif (i==nbPostes-1)
+	else if (i==nbPostes-1)
 	{
 		dernierPoste(i);
 	}
@@ -149,6 +149,7 @@ void dernierPoste(int ID)
 	printf("Le poste %d a termine, le produit est fini. \n",ID);
 	sem_post(&zoneCaissePleine[ID]);
   }
+
 
 void travail(int ID)
 {
