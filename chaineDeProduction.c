@@ -19,7 +19,7 @@ void accueil()
 
 	scanf("%d",&choix);
 
-	printf("%d \n",choix);
+	//printf("%d \n",choix);
 
 	while ((choix<0)||(choix>8))
 	{
@@ -71,8 +71,6 @@ void traitant(int num)
 	free(panneauTicket);
 	free(zoneCaissePleine);
 	free(zoneCaisseVide);
-
-	raise(SIGSTOP);
 }
 
 void* creationThread(void* ID)
@@ -124,6 +122,7 @@ void posteDeTravail(int ID)
 	sem_wait(&zoneCaissePleine[ID-1]);
 	sem_wait(&zoneCaisseVide[ID]);
 
+	printf("caisse prise\n");
 	sem_post(&panneauTicket[ID-1]);
 
 	/*travail(ID);*/
@@ -144,6 +143,7 @@ void posteDeTravail(int ID)
 
 void premierPoste(int ID)
 {
+	//sleep(10);
 	printf("Le poste %d rentre en action. \n",ID);
 	sem_wait(&panneauTicket[ID]);
 

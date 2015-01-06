@@ -32,3 +32,7 @@ pour chaque poste
 -j'ai mis deux caisses pour chaque poste (1 pleine et une vide, ou 2 vides etc..)
 
 Chiara :)
+
+7/01/14
+Il y a un sleep(10) dans chaineDeProduction.c, si tu enleve le // tu peux voire qu'il affiche 
+meme pas  "Le poste 0  rentre en action"

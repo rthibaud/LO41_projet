@@ -5,13 +5,13 @@ int main (int argc, char* argv[])
 	int num;
 	pthread_mutex_init(&mutex,NULL);
 
-	accueil();
-
 	struct sigaction action;
 	action.sa_handler=traitant;
 	sigaction(SIGINT,&action,NULL);
+	accueil();
 
 	tid=(pthread_t *)malloc((nbPostes+1)*sizeof(pthread_t)); 
+	tid_attr=(pthread_attr_t*)malloc((nbPostes+1)*sizeof(pthread_attr_t)); 
 
 	panneauTicket=(sem_t*)malloc((nbPostes+1)*sizeof(sem_t));
 	zoneCaissePleine=(sem_t*)malloc((nbPostes+1)*sizeof(sem_t));
@@ -33,12 +33,16 @@ int main (int argc, char* argv[])
 
 	for(num=0;num<nbPostes;num++)
 	{
-		pthread_create(tid+num,0,creationThread,(void *)num);
+		pthread_attr_init (tid_attr+num);
+ 		pthread_attr_setdetachstate(tid_attr+num, PTHREAD_CREATE_DETACHED) ;
+		//pthread_create(tid+num,0,creationThread,(void *)num);
+		//pthread_join((tid+num-1),NULL);
+  		pthread_create (tid+num, tid_attr+num,creationThread,(void*)num);
 	}
 
 	for(num=0;num<nbPostes;num++)
 	{
-		pthread_join(&tid[num],NULL);
+		//pthread_join((tid+num),NULL);
 	}
 
 	/*liberation des ressources*/
