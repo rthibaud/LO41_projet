@@ -10,20 +10,22 @@
 
 
 
-sem_t panneauTicket[];
-sem_t zoneCaissePleine[];
-sem_t zoneCaisseVide[];
+sem_t *panneauTicket;
+sem_t *zoneCaissePleine;
+sem_t *zoneCaisseVide;
 pthread_t tid[];
 pthread_mutex_t mutex;
 int nbPostes;
 int nbPieces;
+int nbPiecesProduites;
 
 
 
 
-
+void accueil();
 void* creationThread(void* ID);
 void posteDeTravail(int ID);
+void premierPoste(int ID);
 
 
 
