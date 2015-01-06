@@ -9,7 +9,7 @@
 #include <semaphore.h>
 #include <signal.h>
 
-
+#define nbPostes 4
 
 
 sem_t *panneauTicket;
@@ -17,9 +17,10 @@ sem_t *zoneCaissePleine;
 sem_t *zoneCaisseVide;
 pthread_t *tid;
 pthread_mutex_t mutex;
-int nbPostes;
+/*int nbPostes;*/
 int nbPieces;
 int nbPiecesProduites;
+int nbCaisse;
 int val, num;
 
 

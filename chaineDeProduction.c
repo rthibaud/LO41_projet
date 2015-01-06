@@ -38,7 +38,7 @@ void accueil()
 		scanf("%d",&choix);
 	}
 
-	switch(choix)
+	/*switch(choix)
 	{
 		case(1):nbPostes=2;break;
 		case(2):nbPostes=8;break;
@@ -50,7 +50,7 @@ void accueil()
 		case(8):printf("Combien de postes nécessite votre produit ? \n");
 				scanf("%d",&nbPostes);break;
 		case(0):printf("ben aurevoir alors \n");exit(0);break;
-	}
+	}*/
 
 	printf("Combien voulez-vous de pièces ? \n");
 	scanf("%d",&nbPieces);
@@ -80,7 +80,20 @@ void posteDeTravail(int ID)
 	/*travail(ID);*/
 	printf("Le poste %d a termine, il fournit le poste suivant. \n",ID);
 
-	if (ID>0)
+	if (ID<nbPostes-1)
+	{
+		sem_post(&zoneCaisseVide[ID-1]);
+	}
+
+	pthread_mutex_lock(&mutex);
+	sem_getvalue(&zoneCaissePleine[ID-1],&nbCaisse);
+	if (nbCaisse<2 )  
+	{
+		pthread_mutex_unlock(&mutex);
+		posteDeTravail(ID);
+	}
+
+}
 
 void traitant(int num)
  {
@@ -96,19 +109,7 @@ void traitant(int num)
 	free(zoneCaissePleine);
 	free(zoneCaisseVide);
 
-	ID=num;
-	if (ID<nbPostes-1)
-	{
-		sem_post(&zoneCaisseVide[ID-1]);
-	}
-
-	pthread_mutex_lock(&mutex);
-	sem_getvalue(&zoneCaissePleine[ID-1],&nbCaisse);
-	if (nbCaisse<2 )  
-	{
-		pthread_mutex_unlock(&mutex);
-		posteDeTravail(ID);
-	}
+	raise(SIGSTOP);
 }
 
 void premierPoste(int ID)

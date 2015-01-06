@@ -43,7 +43,6 @@ int main (int argc, char* argv[])
 			sem_post(&zoneCaisseVide[num-1]);
 			switch (num)
 			{
-				case 4:
 				{
 					printf("voiture prete\n");
 					num=0;
