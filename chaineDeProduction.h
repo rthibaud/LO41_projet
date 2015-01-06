@@ -9,34 +9,22 @@
 #include <semaphore.h>
 #include <signal.h>
 
-#define nbPostes 4
-
-
 sem_t *panneauTicket;
 sem_t *zoneCaissePleine;
 sem_t *zoneCaisseVide;
 pthread_t *tid;
 pthread_mutex_t mutex;
-/*int nbPostes;*/
+int nbPostes;
 int nbPieces;
 int nbPiecesProduites;
-int nbCaisse;
-int val, num;
-
 
 
 void traitant(int num);
-void travail(int ID);
-
 void accueil();
 void* creationThread(void* ID);
 void posteDeTravail(int ID);
 void premierPoste(int ID);
 void dernierPoste(int ID);
-
-
-
-
 
 #endif
 
