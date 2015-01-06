@@ -41,7 +41,19 @@ void accueil()
 	switch(choix)
 	{
 		case(1):nbPostes=2;break;
+		case(2):nbPostes=8;break;
+		case(3):nbPostes=15;break;
+		case(4):nbPostes=35;break;
+		case(5):nbPostes=100;break;
+		case(6):nbPostes=300;break;
+		case(7):nbPostes=800;break;
+		case(8):printf("Combien de postes nécessite votre produit ? \n");
+				scanf("%d",&nbPostes);break;
+		case(0):printf("ben aurevoir alors \n");exit(0);break;
 	}
+
+	printf("Combien voulez-vous de pièces ? \n");
+	scanf("%d",nbPieces);
 }
 
 void* creationThread(void* ID)
@@ -131,7 +143,7 @@ void travail(int ID)
 {
 	sem_wait(&zoneCaisseVide[ID]); 
 	printf("Le poste %d prepare une piece \n", ID);
-	sleep(1); //BOUCLE
+	sleep(1); /*BOUCLE*/
 	printf("piece construite par le poste %d\n", ID);
 	sem_post(&zoneCaissePleine[ID]);
 }

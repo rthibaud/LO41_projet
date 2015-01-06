@@ -9,7 +9,6 @@
 #include <semaphore.h>
 #include <signal.h>
 
-#define nbPostes 4
 
 
 
@@ -24,11 +23,6 @@ int nbPiecesProduites;
 int val, num;
 
 
-sem_t *panneauTicket;
-sem_t *zoneCaissePleine;
-sem_t *zoneCaisseVide;
-pthread_t *tid;
-pthread_mutex_t mutex;
 
 void traitant(int num);
 void travail(int ID);

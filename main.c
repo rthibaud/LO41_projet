@@ -13,7 +13,6 @@ int main (int argc, char* argv[])
 
 	tid=(pthread_t *)malloc((nbPostes+1)*sizeof(pthread_t)); 
 
-
 	panneauTicket=(sem_t*)malloc((nbPostes+1)*sizeof(sem_t));
 	zoneCaissePleine=(sem_t*)malloc((nbPostes+1)*sizeof(sem_t));
 	zoneCaisseVide=(sem_t*)malloc((nbPostes+1)*sizeof(sem_t));
@@ -26,12 +25,10 @@ int main (int argc, char* argv[])
 	}
 
 
-	panneauTicket=(sem_t*)malloc((nbPostes+1)*sizeof(sem_t));
-	zoneCaissePleine=(sem_t*)malloc((nbPostes+1)*sizeof(sem_t));
-	zoneCaisseVide=(sem_t*)malloc((nbPostes+1)*sizeof(sem_t));
 	
-	//flux de demande
-	sem_post(&zoneCaissePleine[0]); //le premier poste a toujours des materiaux disponibles
+
+	/*flux de demande*/
+	sem_post(&zoneCaissePleine[0]); /*le premier poste a toujours des materiaux disponibles*/
 
 
 	for(num=nbPostes;num>0; num --)
@@ -66,7 +63,7 @@ int main (int argc, char* argv[])
 	}
 
 
-	//liberation des ressources
+	/*liberation des ressources*/
 	for(num=0;num<nbPostes+1;num++)
 	{
 		sem_destroy(&panneauTicket[num]);
