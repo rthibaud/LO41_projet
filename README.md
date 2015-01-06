@@ -22,5 +22,13 @@ j'avais changé beaucoup des choses donc j ai chargé tout avec "_new" à la fin
 puisse marcher. Je suis sur 32 bit, donc si t as de problemes de compilation, essaye d'effaser les files .o et recompiler!
 Le poste qui fournit la voiture est le 4ieme, comme c est ecrit dans le sujet
 
+Chiara
 
+6/01/15
 
+-j'ai ajouté le sighandler pour liberer la memoire
+-j'ai mis l initialisation des semaphores pas dans la boucle pour voire si ça marche en donnant des valeurs differents
+pour chaque poste
+-j'ai mis deux caisses pour chaque poste (1 pleine et une vide, ou 2 vides etc..)
+
+Chiara :)
