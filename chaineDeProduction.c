@@ -137,10 +137,7 @@ void posteDeTravail(int ID,int timeOfProduction)
 	printf("Le poste %d a termine \n",ID);
 	sem_post(&zoneCaissePleine[ID]);
 	sem_post(&zoneCaisseVide[ID-1]);
-	if(nbPieces-nbPiecesProduites==0)
-	{
-		sem_post(&fin); /*on arrete le travail*/
-	}
+	
 	
 }
 
@@ -156,10 +153,7 @@ void premierPoste(int ID, int timeOfProduction)
 	sleep(timeOfProduction);
 	sem_post(&zoneCaissePleine[ID]);
 	printf("Le poste %d a termine\n",ID);	
-	if(nbPieces-nbPiecesProduites==0)
-	{
-		sem_post(&fin); /*on arrete le travail*/
-	}	
+
 
   }
 

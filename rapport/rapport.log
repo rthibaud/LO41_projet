@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.12.18)  7 JAN 2015 14:24
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.12.18)  7 JAN 2015 17:50
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -418,9 +418,9 @@ Chapitre 3.
 Chapitre 4.
 [6
 
-]
+] [7]
 Chapitre 5.
-[7
+[8
 
 ] (./rapport.aux) ) 
 Here is how much of TeX's memory you used:
@@ -430,7 +430,7 @@ Here is how much of TeX's memory you used:
  6213 multiletter control sequences out of 15000+600000
  15690 words of font info for 37 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 37i,6n,23p,678b,217s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 37i,6n,23p,680b,217s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-t1.enc}<
 /usr/share/texmf/fonts/type1/public/cm-super/sfbx1095.pfb></usr/share/texmf/fon
 ts/type1/public/cm-super/sfbx1440.pfb></usr/share/texmf/fonts/type1/public/cm-s
@@ -438,10 +438,10 @@ uper/sfbx2074.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx2488.pfb></
 usr/share/texmf/fonts/type1/public/cm-super/sfcc1200.pfb></usr/share/texmf/font
 s/type1/public/cm-super/sfrm1095.pfb></usr/share/texmf/fonts/type1/public/cm-su
 per/sfrm1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1728.pfb>
-Output written on rapport.pdf (8 pages, 134314 bytes).
+Output written on rapport.pdf (9 pages, 135517 bytes).
 PDF statistics:
- 64 PDF objects out of 1000 (max. 8388607)
- 45 compressed objects within 1 object stream
+ 67 PDF objects out of 1000 (max. 8388607)
+ 47 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
