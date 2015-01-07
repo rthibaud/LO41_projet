@@ -8,6 +8,7 @@
 #include <pthread.h>
 #include <semaphore.h>
 #include <signal.h>
+#include <time.h>
 
 sem_t *panneauTicket;
 sem_t *zoneCaissePleine;
@@ -24,9 +25,9 @@ int nbPiecesProduites;
 void traitant(int num);
 void accueil();
 void* creationThread(void* ID);
-void posteDeTravail(int ID);
-void premierPoste(int ID);
-void dernierPoste(int ID);
+void posteDeTravail(int ID,int timeOfProduction);
+void premierPoste(int ID,int timeOfProduction);
+void dernierPoste(int ID,int timeOfProduction);
 
 #endif
 

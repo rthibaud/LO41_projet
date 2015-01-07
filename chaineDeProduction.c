@@ -19,7 +19,6 @@ void accueil()
 
 	scanf("%d",&choix);
 
-	//printf("%d \n",choix);
 
 	while ((choix<0)||(choix>8))
 	{
@@ -78,38 +77,34 @@ void traitant(int num)
 
 void* creationThread(void* ID)
 {
-	int i,val;
+	int i,val,timeOfProduction;
 	i=(int)ID;
 
+	srand(time(NULL));
+	timeOfProduction=rand()%5;
 	if (i==0)
 	{
 		pthread_mutex_lock(&mutex);
-		/*sem_getvalue(&zoneCaissePleine[i],&val);
-		while (val<2)
-		{*/
+	
 			sem_getvalue(&zoneCaissePleine[i+1],&val);
 			while((nbPiecesProduites<nbPieces) || (val<=2))
 			{
 				pthread_mutex_unlock(&mutex);
-				premierPoste(i);
+				premierPoste(i,timeOfProduction);
 				sem_getvalue(&panneauTicket[i],&val);
 			}
-			/*sem_getvalue(&zoneCaissePleine[i],&val);
-		}*/
+
 	}
 	else if (i==nbPostes-1)
 	{
-		/*sem_getvalue(&zoneCaissePleine[i+1],&val);
-		while((nbPiecesProduites<nbPieces) || (val<2))
-		{*/
+	
 		sem_getvalue(&panneauTicket[i],&val);
 		while(val>0)
 		{
-			dernierPoste(i);
+			dernierPoste(i,timeOfProduction);
 			sem_getvalue(&panneauTicket[i],&val);
 		}
-		/*sem_getvalue(&zoneCaissePleine[i+1],&val);
-		}*/
+		
 	}
 	else
 	{
@@ -118,134 +113,75 @@ void* creationThread(void* ID)
 		while((nbPiecesProduites<nbPieces) || (val<=2))
 		{
 			pthread_mutex_unlock(&mutex);
-			posteDeTravail(i);
+			posteDeTravail(i,timeOfProduction);
 			sem_getvalue(&panneauTicket[i],&val);
 		}
 	}
 }
 
-void posteDeTravail(int ID)
+void posteDeTravail(int ID,int timeOfProduction)
 {
-	int val0,val4;
 	("poste %d: j'attends le ticket\n", ID);
 	sem_wait(&panneauTicket[ID]);
 
-	/*sem_getvalue(&zoneCaissePleine[ID],&val0);
-	if(val0>0)
+
+	printf("oui\nLe poste %d prend une caisse pleine et une vide \n",ID);
+	sem_wait(&zoneCaissePleine[ID-1]);
+	sem_wait(&zoneCaisseVide[ID]);
+
+	sem_post(&panneauTicket[ID-1]);
+
+	printf("le poste %d prepare une piece...\n", ID);
+
+	sleep(timeOfProduction);
+	printf("Le poste %d a termine \n",ID);
+	sem_post(&zoneCaissePleine[ID]);
+	sem_post(&zoneCaisseVide[ID-1]);
+	if(nbPieces-nbPiecesProduites==0)
 	{
-		printf("le poste %d a %d pieces deja pretes\n", ID, val0);
-	}
-	else*/
-	{
-		printf("le poste %d a des pieces pretes? ",ID-1);
-		sem_getvalue(&zoneCaissePleine[ID-1],&val4);
-		if (val4>0)
-		{
-			printf("oui\nLe poste %d prend une caisse pleine et une vide \n",ID);
-			sem_wait(&zoneCaissePleine[ID-1]);
-			sem_wait(&zoneCaisseVide[ID]);
-
-			sem_post(&panneauTicket[ID-1]);
-
-			printf("le poste %d prepare une piece...\n", ID);
-
-			sleep(1);
-
-			printf("Le poste %d a termine \n",ID);
-			sem_post(&zoneCaissePleine[ID]);
-			sem_post(&zoneCaisseVide[ID-1]);
-		}
-		else
-			printf("non, reveil le poste amont\n");
-			sem_post(&panneauTicket[ID-1]);
-
-			printf("poste %d: attend caisse pleine du poste amont\n",ID);
-			sem_wait(&zoneCaissePleine[ID-1]);
-			printf("poste %d prends une piece du poste amont \n", ID);
-
-			printf("Le poste %d prepare une piece...\n", ID);
-			sleep(1);
-			printf("Le poste %d a termine \n",ID);
-			sem_post(&zoneCaissePleine[ID]);
-			sem_post(&zoneCaisseVide[ID-1]);
+		sem_post(&fin); /*on arrete le travail*/
 	}
 	
 }
 
-void premierPoste(int ID)
+void premierPoste(int ID, int timeOfProduction)
 {
-	int val1;
 	sem_wait(&panneauTicket[ID]);
 	
-	sem_getvalue(&zoneCaissePleine[ID],&val1); 
-	if(val1>0)
+
+	printf("Le premier poste (%d) prend une caisse vide à remplir avec la matiere premiere\n",ID);
+	sem_wait(&zoneCaisseVide[ID]);
+	
+	printf("le premier poste (%d) prepare une piece...\n", ID);
+	sleep(timeOfProduction);
+	sem_post(&zoneCaissePleine[ID]);
+	printf("Le poste %d a termine\n",ID);	
+	if(nbPieces-nbPiecesProduites==0)
 	{
-		printf("le poste %d a %d pieces deja pretes\n", ID, val1);
-	}
-	else
-	{
-		printf("Le premier poste (%d) prend une caisse vide à remplir avec la matiere premiere\n",ID);
-		sem_wait(&zoneCaisseVide[ID]);
-		
-		printf("le premier poste (%d) prepare une piece...\n", ID);
-		sleep(1);
-		sem_post(&zoneCaissePleine[ID]);
-		printf("Le poste %d a termine\n",ID);	
-		sem_post(&panneauTicket[ID]);
-	}
+		sem_post(&fin); /*on arrete le travail*/
+	}	
+
   }
 
-void dernierPoste(int ID)
+void dernierPoste(int ID, int timeOfProduction)
 {
-	int val2,val3;
+
 	sem_wait(&panneauTicket[ID]);
 
-	sem_getvalue(&zoneCaissePleine[ID],&val2);
-	if(val2>0)
+	printf("le poste %d a des pieces deja pretes, il envoie au poste aval\n", ID);
+	sem_wait(&zoneCaissePleine[ID-1]);
+	sem_post(&panneauTicket[ID-1]);
+
+	printf("Le poste %d a termine, le %d eme produit est fini. \n",ID, nbPiecesProduites+1);
+	pthread_mutex_lock(&mutex);
+	nbPiecesProduites++;
+	pthread_mutex_unlock(&mutex);
+
+	sem_post(&zoneCaisseVide[ID-1]);
+	if(nbPieces-nbPiecesProduites==0)
 	{
-		printf("le poste %d a %d pieces deja pretes, il envoie au poste aval\n", ID, val2);
-		sem_wait(&zoneCaissePleine[ID]);
-		sem_post(&panneauTicket[ID-1]);
-
-		printf("Le poste %d a termine, le %d eme produit est fini. \n",ID, nbPiecesProduites+1);
-		pthread_mutex_lock(&mutex);
-		nbPiecesProduites++;
-		pthread_mutex_unlock(&mutex);
-
-		sem_post(&zoneCaisseVide[ID-1]);
-		if(nbPieces-nbPiecesProduites==0)
-		{
-			sem_post(&fin); /*on arrete le travail*/
-		}
-	}
-	else
-	{
-		printf("le poste %d a des pieces pretes? ",ID-1);
-		sem_getvalue(&zoneCaissePleine[ID-1],&val3);
-		if (val3>0)
-		{
-			printf("oui\nLe poste %d prend une caisse pleine \n",ID);
-			sem_wait(&zoneCaissePleine[ID-1]);
-			printf("le poste %d prepare une piece...\n", ID);
-
-			printf("Le poste %d a termine, le %d eme produit est fini. \n",ID, nbPiecesProduites+1);
-			pthread_mutex_lock(&mutex);
-			nbPiecesProduites++;
-			pthread_mutex_unlock(&mutex);
-			sem_post(&zoneCaisseVide[ID-1]);
-			if(nbPieces-nbPiecesProduites==0)
-			{
-				sem_post(&fin);
-			}
-		}
-		else
-		{
-			printf("non, demande au poste amont\n");
-			sem_post(&panneauTicket[ID-1]);
-			sem_wait(&zoneCaissePleine[ID-1]);
-
-		}
+		sem_post(&fin); /*on arrete le travail*/
 	}
 
-  }
+}
 

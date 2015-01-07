@@ -2,7 +2,7 @@
 
 int main (int argc, char* argv[])
 {
-	int num,i,valeur1,valeur2;
+	int num,i,valeur1,valeur2,k;
 	pthread_mutex_init(&mutex,NULL);
 
 	struct sigaction action;
@@ -10,7 +10,7 @@ int main (int argc, char* argv[])
 
 	accueil();
 
-	sigaction(SIGINT,&action,NULL);
+
 
 	tid=(pthread_t *)malloc((nbPostes+1)*sizeof(pthread_t)); 
 	tid_attr=(pthread_attr_t*)malloc((nbPostes+1)*sizeof(pthread_attr_t)); 
@@ -19,7 +19,11 @@ int main (int argc, char* argv[])
 	zoneCaissePleine=(sem_t*)malloc((nbPostes+1)*sizeof(sem_t));
 	zoneCaisseVide=(sem_t*)malloc((nbPostes+1)*sizeof(sem_t));
 
-	sem_init(&fin,0,0);
+	sigaction(SIGINT,&action,NULL);
+	sem_init(&fin,0,(-nbPostes+1));
+	sem_getvalue(&fin,&k);
+
+	printf("%d \n",k);
 
 	for(num=0;num<nbPostes;num ++)
 	{			
