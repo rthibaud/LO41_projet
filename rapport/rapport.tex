@@ -48,6 +48,14 @@ Enfin il ne reste plus qu'à implémenter en C une solution en choisissant parmi
 	
 	\section{Réseau de pétri}
 	
+	Afin de bien structurer notre pensée concernant le problème posé, nous avons établit un réseau de pétri représentant le fonctionnement d'un seul poste de travail :
+	
+	\begin{figure}[!h]
+\centering
+\includegraphics[width=16cm]{reseau.jpg}
+\caption{Réseau de pétri : fonctionnement d'un poste de travail}
+\end{figure}
+	
 	\section{Observations globales}
 		De toute évidence chaque poste de travail est indépendant des autres. Il alimente la chaine avec ses pièces, mais travail en autonomie sur son produit. Il n'a de contact avec les autres postes que par l'intermédiaire des étiquettes et des conteneurs, qu'ils soient vides ou pleins. On voit alors facilement que les ressources partagées dans le programme sont les étiquettes et les caisses, et qu'elles seront manipulées par des agents qui seront les postes de travails. 
 	
@@ -71,4 +79,20 @@ Enfin il ne reste plus qu'à implémenter en C une solution en choisissant parmi
 	
 	Nous l'avons évoqué plutôt dans ce rapport, il y a la possibilité de simuler une usine fabriquant plusieurs produits en même temps en se servant de plusieurs processus. Il est possible de pousser le concept en ajoutant un même poste de travail à plusieurs chaines de productions. Par contre un tel changement implique par exemple de changer les sémaphores posix en sémaphores IPC, ou encore la mise en place de pipes pour la comminication inter-processus.
 \chapter{Conclusion}
+\begin{description}
+\item[Retour de Chiara : ]Ce projet nous a permis de nous familiariser avec les threads et leurs utlisations, en traitant
+un problème où la quantité de ces derniers peux etre parametrable.
+
+C'était mon premier projet réalisé en langage C, et donc j'ai pu approfondir mes connaissances,
+en essayant avec plusieurs solutions pour chercher celle qui permettait au mieux de répondre
+au sujet proposé. De plus, j'ai appris à utiliser l'outil Github. Il a été très precieux dans notre
+travail car il nous a permis d'échanger rapidement les informations entre nous.
+
+J'ai apprécié le travail en équipe, une compétence qui peut etre utile dans notre future carrière.
+\item[Retour de Romain : ]Pour moi, ce sujet fut une réelle surprise. J'avais de grandes appréhensions concernant l'intêret qu'il suciterait chez moi. Je me suis finalement pris au jeu dans un langage que je n'apprécie pas spécialement.
+
+Cet aspect de gestion des ressources au plus près de la machine est au final très prenant et instructif concernant les comportements de certains programmes. 
+
+Au final, l'aspect travaille en groupe est toujours très enrichissant. Il nous permet de découvrir d'autres vision des problèmes, et offre surtout une opportunité de mettre ses idées à l'épreuves et donc la possiblités de se remettre en cause, un avantage certain pour progresser.
+\end{description}
 \end{document}

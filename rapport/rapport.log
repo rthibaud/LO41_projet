@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.12.18)  7 JAN 2015 21:04
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.12.18)  7 JAN 2015 21:53
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -412,36 +412,47 @@ Chapitre 2.
 
 ] [4]
 Chapitre 3.
+<reseau.jpg, id=26, 1040.88875pt x 571.13374pt>
+File: reseau.jpg Graphic file (type jpg)
+ <use reseau.jpg>
+Package pdftex.def Info: reseau.jpg used on input line 55.
+(pdftex.def)             Requested size: 455.24408pt x 249.79196pt.
+
+Overfull \hbox (95.24408pt too wide) in paragraph at lines 55--56
+ [][] 
+ []
+
 [5
 
-]
+ <./reseau.jpg>] [6]
 Chapitre 4.
-[6
+[7
 
-] [7]
+] [8]
 Chapitre 5.
-[8
+[9
 
 ] (./rapport.aux) ) 
 Here is how much of TeX's memory you used:
- 2792 strings out of 493304
- 37028 string characters out of 6139870
+ 2800 strings out of 493304
+ 37126 string characters out of 6139870
  101756 words of memory out of 5000000
- 6215 multiletter control sequences out of 15000+600000
- 15690 words of font info for 37 fonts, out of 8000000 for 9000
+ 6220 multiletter control sequences out of 15000+600000
+ 16366 words of font info for 38 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 37i,6n,23p,680b,217s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 37i,6n,23p,680b,226s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-t1.enc}<
 /usr/share/texmf/fonts/type1/public/cm-super/sfbx1095.pfb></usr/share/texmf/fon
 ts/type1/public/cm-super/sfbx1440.pfb></usr/share/texmf/fonts/type1/public/cm-s
 uper/sfbx2074.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx2488.pfb></
-usr/share/texmf/fonts/type1/public/cm-super/sfcc1200.pfb></usr/share/texmf/font
-s/type1/public/cm-super/sfrm1095.pfb></usr/share/texmf/fonts/type1/public/cm-su
-per/sfrm1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1728.pfb>
-Output written on rapport.pdf (9 pages, 137560 bytes).
+usr/share/texmf/fonts/type1/public/cm-super/sfcc1095.pfb></usr/share/texmf/font
+s/type1/public/cm-super/sfcc1200.pfb></usr/share/texmf/fonts/type1/public/cm-su
+per/sfrm1095.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1200.pfb></u
+sr/share/texmf/fonts/type1/public/cm-super/sfrm1728.pfb>
+Output written on rapport.pdf (10 pages, 178783 bytes).
 PDF statistics:
- 67 PDF objects out of 1000 (max. 8388607)
- 47 compressed objects within 1 object stream
+ 75 PDF objects out of 1000 (max. 8388607)
+ 52 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 6 words of extra memory for PDF output out of 10000 (max. 10000000)
 
