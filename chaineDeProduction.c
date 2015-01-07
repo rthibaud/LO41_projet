@@ -72,6 +72,8 @@ void traitant(int num)
 	free(panneauTicket);
 	free(zoneCaissePleine);
 	free(zoneCaisseVide);
+
+	raise(SIGSTOP);
 }
 
 void* creationThread(void* ID)
@@ -81,39 +83,39 @@ void* creationThread(void* ID)
 
 	if (i==0)
 	{
-		//pthread_mutex_lock(&mutex);
-		sem_getvalue(&zoneCaissePleine[i],&val);
+		pthread_mutex_lock(&mutex);
+		/*sem_getvalue(&zoneCaissePleine[i],&val);
 		while (val<2)
-		{
-			sem_getvalue(&panneauTicket[i],&val);
-			while(val>0)
+		{*/
+			sem_getvalue(&zoneCaissePleine[i+1],&val);
+			while((nbPiecesProduites<nbPieces) || (val<=2))
 			{
-				//pthread_mutex_unlock(&mutex);
+				pthread_mutex_unlock(&mutex);
 				premierPoste(i);
 				sem_getvalue(&panneauTicket[i],&val);
 			}
-			sem_getvalue(&zoneCaissePleine[i],&val);
-		}
+			/*sem_getvalue(&zoneCaissePleine[i],&val);
+		}*/
 	}
 	else if (i==nbPostes-1)
 	{
-		sem_getvalue(&zoneCaissePleine[i+1],&val);
+		/*sem_getvalue(&zoneCaissePleine[i+1],&val);
 		while((nbPiecesProduites<nbPieces) || (val<2))
-		{
+		{*/
 		sem_getvalue(&panneauTicket[i],&val);
 		while(val>0)
 		{
 			dernierPoste(i);
 			sem_getvalue(&panneauTicket[i],&val);
 		}
-		sem_getvalue(&zoneCaissePleine[i+1],&val);
-		}
+		/*sem_getvalue(&zoneCaissePleine[i+1],&val);
+		}*/
 	}
 	else
 	{
 		pthread_mutex_lock(&mutex);
-		sem_getvalue(&panneauTicket[i],&val);
-		while(val<=2)
+		sem_getvalue(&zoneCaissePleine[i+1],&val);
+		while((nbPiecesProduites<nbPieces) || (val<=2))
 		{
 			pthread_mutex_unlock(&mutex);
 			posteDeTravail(i);
