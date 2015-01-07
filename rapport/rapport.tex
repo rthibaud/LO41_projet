@@ -64,5 +64,11 @@ Enfin il ne reste plus qu'à implémenter en C une solution en choisissant parmi
 	Afin d'assurer une indépendance des postes de travails et surtout la simultanéité de leur travail, deux choix s'offraient à nous : chaque poste un processus ou chaque poste est un thread. Nous avons optés pour la deuxième solution. Ce choix a été motivé par une volonté d'évolution. En effet dans l'éventualité où l'on souhaite simuler le fonctionnement d'une usine, avec donc plusieurs chaines de productions, on pourrait alors modeliser chaque chaine par un processus et donc chaque poste de travail par un thread. C'est dans cet optique que nous avons choisit d'utiliser des threads d'entrée pour modéliser nos postes de travail.
 	
 	Concernant les ressources partagées dans le programme nous avons décidé d'utiliser des sémaphores afin de les représenter. Ils permettent de synchroniser nos threads entre eux et donc de ne travailler que quand ils en ont le droits. Concrètement, nous avons trois tableaux de sémaphores que l'on alloue dynamiquement en fonction du nombre de postes afin d'économiser au plus les ressources de la machine. Plus concrètement, nous avons mis en place des sémaphores posix, car nous les trouvons plus agréable à manipuler et cela ne pose pas de problème comme nous dialoguons au sein d'un seul processus contenant plusieurs threads. 
+	
+	Pour la gestion de la libération de mémoire nous avons simplement choisit de "surcharger" le signal SIGSTOP (Ctrl+C). Son appel provoque la désallocation de toutes les variables dynamiques et autres threads. On rétablit alors la valeur par défaut du signal qui coupe alors l'éxecution du programme.
+	
+	\section{Que pourrait-on ajouter ?}
+	
+	Nous l'avons évoqué plutôt dans ce rapport, il y a la possibilité de simuler une usine fabriquant plusieurs produits en même temps en se servant de plusieurs processus. Il est possible de pousser le concept en ajoutant un même poste de travail à plusieurs chaines de productions. Par contre un tel changement implique par exemple de changer les sémaphores posix en sémaphores IPC, ou encore la mise en place de pipes pour la comminication inter-processus.
 \chapter{Conclusion}
 \end{document}
